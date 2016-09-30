@@ -3,6 +3,7 @@ package com.rbkmoney.log.appender;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.core.FileAppender;
 import ch.qos.logback.core.encoder.EchoEncoder;
+import ch.qos.logback.core.rolling.RollingPolicy;
 import org.junit.After;
 import org.junit.Test;
 import org.slf4j.LoggerFactory;
@@ -12,16 +13,6 @@ import java.io.*;
 import static org.junit.Assert.*;
 
 public class RotatableFileAppenderTest {
-
-    @Test
-    public void triggeringPolicyIsRotationBased() throws Exception {
-        assertInstanceOf(RotationBasedTriggeringPolicy.class, new RotatableFileAppender<Void>().getTriggeringPolicy());
-    }
-
-    @Test
-    public void rollingPolicyIsNoop() throws Exception {
-        assertInstanceOf(NoopRollingPolicy.class, new RotatableFileAppender<Void>().getRollingPolicy());
-    }
 
     private void assertInstanceOf(Class<?> clazz, Object object) {
         assertNotNull(object);
@@ -38,8 +29,21 @@ public class RotatableFileAppenderTest {
         rotatedLogFile = new File(logFile.getPath() + ".1");
 
         RotatableFileAppender<String> appender = new RotatableFileAppender<>();
-        appender.setEncoder(new EchoEncoder<>());
+
         appender.setFile(logFile.getPath());
+
+        RotationBasedTriggeringPolicy triggeringPolicy = new RotationBasedTriggeringPolicy<>();
+        appender.setTriggeringPolicy(triggeringPolicy);
+        triggeringPolicy.start();
+        RollingPolicy rollingPolicy = new NoopRollingPolicy();
+        appender.setRollingPolicy(rollingPolicy);
+        rollingPolicy.setParent(appender);
+
+        assertInstanceOf(RotationBasedTriggeringPolicy.class, appender.getTriggeringPolicy());
+        assertInstanceOf(NoopRollingPolicy.class, appender.getRollingPolicy());
+
+        appender.setEncoder(new EchoEncoder<>());
+
         appender.setCheckCachePeriod(0);
         appender.setContext(lc);
 
