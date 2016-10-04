@@ -3,6 +3,7 @@ package com.rbkmoney.log.appender;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.core.FileAppender;
 import ch.qos.logback.core.encoder.EchoEncoder;
+import ch.qos.logback.core.rolling.RollingFileAppender;
 import ch.qos.logback.core.rolling.RollingPolicy;
 import org.junit.After;
 import org.junit.Test;
@@ -28,11 +29,12 @@ public class RotatableFileAppenderTest {
         logFile = File.createTempFile(getClass().getSimpleName(), ".log");
         rotatedLogFile = new File(logFile.getPath() + ".1");
 
-        RotatableFileAppender<String> appender = new RotatableFileAppender<>();
+        RollingFileAppender<String> appender = new RollingFileAppender<>();
 
         appender.setFile(logFile.getPath());
 
         RotationBasedTriggeringPolicy triggeringPolicy = new RotationBasedTriggeringPolicy<>();
+        triggeringPolicy.setCheckCachePeriod(0);
         appender.setTriggeringPolicy(triggeringPolicy);
         triggeringPolicy.start();
         RollingPolicy rollingPolicy = new NoopRollingPolicy();
@@ -43,8 +45,6 @@ public class RotatableFileAppenderTest {
         assertInstanceOf(NoopRollingPolicy.class, appender.getRollingPolicy());
 
         appender.setEncoder(new EchoEncoder<>());
-
-        appender.setCheckCachePeriod(0);
         appender.setContext(lc);
 
         appender.start();
