@@ -12,7 +12,7 @@
 
     <groupId>com.rbkmoney.logback</groupId>
     <artifactId>nop-rolling</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <packaging>jar</packaging>
 
     <description>Fittings for Logback to make it submit to external log rotation</description>
@@ -52,6 +52,7 @@
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
             <version>1.10.19</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
