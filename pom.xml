@@ -12,7 +12,7 @@
 
     <groupId>com.rbkmoney.logback</groupId>
     <artifactId>nop-rolling</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
     <packaging>jar</packaging>
 
     <description>Fittings for Logback to make it submit to external log rotation</description>

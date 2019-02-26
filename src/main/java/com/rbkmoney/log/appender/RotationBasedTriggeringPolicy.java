@@ -5,6 +5,7 @@ import ch.qos.logback.core.rolling.TriggeringPolicyBase;
 import java.io.File;
 
 public class RotationBasedTriggeringPolicy<E> extends TriggeringPolicyBase<E> {
+
     protected static class Clock {
         public long currentTimeMillis() {
             return System.currentTimeMillis();
@@ -34,20 +35,16 @@ public class RotationBasedTriggeringPolicy<E> extends TriggeringPolicyBase<E> {
 
     @Override
     public boolean isTriggeringEvent(File activeFile, E event) {
-        return !activeFileExists(activeFile);
+        return !isCurrentTimeLessThanRotationTime();
     }
 
-    private boolean activeFileExists(File activeFile) {
+    private boolean isCurrentTimeLessThanRotationTime() {
         long now = clock.currentTimeMillis();
         if (now < nextTime) {
             return true;
         } else {
-            boolean exists = activeFile.exists();
-            if (exists) {
-                nextTime = now + checkCachePeriod;
-            }
-            return exists;
+            nextTime = now + checkCachePeriod;
+            return false;
         }
     }
-
 }

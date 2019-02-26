@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
+import java.nio.file.Files;
 
 import static org.junit.Assert.*;
 
@@ -33,7 +34,7 @@ public class RotatableFileAppenderTest {
 
         appender.setFile(logFile.getPath());
 
-        RotationBasedTriggeringPolicy triggeringPolicy = new RotationBasedTriggeringPolicy<>();
+        RotationBasedTriggeringPolicy<String> triggeringPolicy = new RotationBasedTriggeringPolicy<>();
         triggeringPolicy.setCheckCachePeriod(0);
         appender.setTriggeringPolicy(triggeringPolicy);
         triggeringPolicy.start();
@@ -57,6 +58,83 @@ public class RotatableFileAppenderTest {
 
         assertEquals("event 1", readTheSingleLineWhichComprises(rotatedLogFile));
         assertEquals("event 2", readTheSingleLineWhichComprises(logFile));
+    }
+
+    @Test
+    public void renamedLogFileWithTimeoutMoreThanCachePeriodTest() throws Exception {
+        LoggerContext lc = (LoggerContext) LoggerFactory.getILoggerFactory();
+        logFile = File.createTempFile(getClass().getSimpleName(), ".log");
+        rotatedLogFile = new File(logFile.getPath() + ".1");
+
+        RollingFileAppender<String> appender = new RollingFileAppender<>();
+
+        RotationBasedTriggeringPolicy<String> triggeringPolicy = new RotationBasedTriggeringPolicy<>();
+        triggeringPolicy.setCheckCachePeriod(100);
+
+        RollingPolicy rollingPolicy = new NoopRollingPolicy();
+        rollingPolicy.setParent(appender);
+
+        appender.setFile(logFile.getPath());
+        appender.setEncoder(new EchoEncoder<>());
+        appender.setContext(lc);
+        appender.setTriggeringPolicy(triggeringPolicy);
+        appender.setRollingPolicy(rollingPolicy);
+
+        triggeringPolicy.start();
+        appender.start();
+
+        for (int i = 0; i < 100; i++) {
+            appender.doAppend("event 1");
+        }
+        Thread.sleep(100);
+        logFile.renameTo(rotatedLogFile);
+
+        for (int i = 0; i < 100; i++) {
+            appender.doAppend("event 1");
+        }
+
+        appender.stop();
+
+        assertEquals(100, Files.readAllLines(logFile.toPath()).size());
+        assertEquals(100, Files.readAllLines(rotatedLogFile.toPath()).size());
+    }
+
+    @Test
+    public void renamedLogFileWithTimeoutLessThanCachePeriodTest() throws Exception {
+        LoggerContext lc = (LoggerContext) LoggerFactory.getILoggerFactory();
+        logFile = File.createTempFile(getClass().getSimpleName(), ".log");
+        rotatedLogFile = new File(logFile.getPath() + ".1");
+
+        RollingFileAppender<String> appender = new RollingFileAppender<>();
+
+        RotationBasedTriggeringPolicy<String> triggeringPolicy = new RotationBasedTriggeringPolicy<>();
+        triggeringPolicy.setCheckCachePeriod(100);
+
+        RollingPolicy rollingPolicy = new NoopRollingPolicy();
+        rollingPolicy.setParent(appender);
+
+        appender.setFile(logFile.getPath());
+        appender.setEncoder(new EchoEncoder<>());
+        appender.setContext(lc);
+        appender.setTriggeringPolicy(triggeringPolicy);
+        appender.setRollingPolicy(rollingPolicy);
+
+        triggeringPolicy.start();
+        appender.start();
+
+        for (int i = 0; i < 100; i++) {
+            appender.doAppend("event 1");
+        }
+        Thread.sleep(10);
+        logFile.renameTo(rotatedLogFile);
+
+        for (int i = 0; i < 100; i++) {
+            appender.doAppend("event 1");
+        }
+
+        appender.stop();
+
+        assertEquals(200, Files.readAllLines(rotatedLogFile.toPath()).size());
     }
 
     @Test
