@@ -8,6 +8,6 @@ build('rotatable_appender', 'docker-host') {
         javaLibPipeline = load("build_utils/jenkins_lib/pipeJavaLib.groovy")
     }
 
-    def buildImageTag = "7372dc01bf066b5b26be13d6de0c7bed70648a26"
+    def buildImageTag = "07d3946f8f005782697de20270ac58cdcd18b011"
     javaLibPipeline(buildImageTag)
 }
