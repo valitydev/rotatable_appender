@@ -5,33 +5,33 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.rbkmoney</groupId>
-        <artifactId>parent</artifactId>
-        <version>1.0.4</version>
+        <groupId>dev.vality</groupId>
+        <artifactId>library-parent-pom</artifactId>
+        <version>1.0.2</version>
     </parent>
 
-    <groupId>com.rbkmoney.logback</groupId>
+    <groupId>dev.vality.logback</groupId>
     <artifactId>nop-rolling</artifactId>
-    <version>1.0.4</version>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
 
     <name>Rotatable appender</name>
     <description>Fittings for Logback to make it submit to external log rotation</description>
-    <url>https://github.com/rbkmoney/rotatable_appender.git</url>
+    <url>https://github.com/valitydev/rotatable_appender.git</url>
 
     <developers>
         <developer>
             <name>Pavel Popov</name>
-            <email>p.popov@rbkmoney.com</email>
-            <organization>RBK.money</organization>
-            <organizationUrl>https://rbk.money</organizationUrl>
+            <email>p.popov@vality.dev</email>
+            <organization>Vality</organization>
+            <organizationUrl>https://vality.dev</organizationUrl>
         </developer>
     </developers>
 
     <scm>
-        <connection>scm:git:git://github.com/rbkmoney/rotatable_appender.git</connection>
-        <developerConnection>scm:git:ssh://github.com/rbkmoney/rotatable_appender.git</developerConnection>
-        <url>https://github.com/rbkmoney/rotatable_appender/tree/master</url>
+        <connection>scm:git:git://github.com/valitydev/rotatable_appender.git</connection>
+        <developerConnection>scm:git:ssh://github.com/valitydev/rotatable_appender.git</developerConnection>
+        <url>https://github.com/valitydev/rotatable_appender/tree/master</url>
     </scm>
 
     <properties>

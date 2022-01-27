@@ -1,4 +1,4 @@
-package com.rbkmoney.log.appender;
+package dev.vality.log.appender;
 
 import org.junit.Test;
 

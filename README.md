@@ -20,7 +20,7 @@ Appender для logback, необходимый для корректной ра
     <version>4.6</version>
 </dependency>
 <dependency>
-    <groupId>com.rbkmoney.logback</groupId>
+    <groupId>dev.vality.logback</groupId>
     <artifactId>nop-rolling</artifactId>
     <version>1.0.0</version>
 </dependency>

@@ -1,4 +1,4 @@
-package com.rbkmoney.log.appender;
+package dev.vality.log.appender;
 
 import ch.qos.logback.core.rolling.RollingPolicyBase;
 import ch.qos.logback.core.rolling.RolloverFailure;
@@ -6,7 +6,8 @@ import ch.qos.logback.core.rolling.RolloverFailure;
 public class NoopRollingPolicy extends RollingPolicyBase {
 
     @Override
-    public void rollover() throws RolloverFailure {}
+    public void rollover() throws RolloverFailure {
+    }
 
     @Override
     public String getActiveFileName() {
