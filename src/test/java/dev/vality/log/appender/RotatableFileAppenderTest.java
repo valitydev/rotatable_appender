@@ -1,4 +1,4 @@
-package com.rbkmoney.log.appender;
+package dev.vality.log.appender;
 
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.core.FileAppender;
@@ -26,7 +26,6 @@ public class RotatableFileAppenderTest {
 
     @Test
     public void itActuallyWorks() throws Exception {
-        LoggerContext lc = (LoggerContext) LoggerFactory.getILoggerFactory();
         logFile = File.createTempFile(getClass().getSimpleName(), ".log");
         rotatedLogFile = new File(logFile.getPath() + ".1");
 
@@ -46,6 +45,7 @@ public class RotatableFileAppenderTest {
         assertInstanceOf(NoopRollingPolicy.class, appender.getRollingPolicy());
 
         appender.setEncoder(new EchoEncoder<>());
+        LoggerContext lc = (LoggerContext) LoggerFactory.getILoggerFactory();
         appender.setContext(lc);
 
         appender.start();
@@ -62,7 +62,6 @@ public class RotatableFileAppenderTest {
 
     @Test
     public void renamedLogFileWithTimeoutMoreThanCachePeriodTest() throws Exception {
-        LoggerContext lc = (LoggerContext) LoggerFactory.getILoggerFactory();
         logFile = File.createTempFile(getClass().getSimpleName(), ".log");
         rotatedLogFile = new File(logFile.getPath() + ".1");
 
@@ -76,6 +75,7 @@ public class RotatableFileAppenderTest {
 
         appender.setFile(logFile.getPath());
         appender.setEncoder(new EchoEncoder<>());
+        LoggerContext lc = (LoggerContext) LoggerFactory.getILoggerFactory();
         appender.setContext(lc);
         appender.setTriggeringPolicy(triggeringPolicy);
         appender.setRollingPolicy(rollingPolicy);
@@ -101,7 +101,6 @@ public class RotatableFileAppenderTest {
 
     @Test
     public void renamedLogFileWithTimeoutLessThanCachePeriodTest() throws Exception {
-        LoggerContext lc = (LoggerContext) LoggerFactory.getILoggerFactory();
         logFile = File.createTempFile(getClass().getSimpleName(), ".log");
         rotatedLogFile = new File(logFile.getPath() + ".1");
 
@@ -115,6 +114,7 @@ public class RotatableFileAppenderTest {
 
         appender.setFile(logFile.getPath());
         appender.setEncoder(new EchoEncoder<>());
+        LoggerContext lc = (LoggerContext) LoggerFactory.getILoggerFactory();
         appender.setContext(lc);
         appender.setTriggeringPolicy(triggeringPolicy);
         appender.setRollingPolicy(rollingPolicy);
@@ -139,14 +139,14 @@ public class RotatableFileAppenderTest {
 
     @Test
     public void checkOnFileRename() throws Exception {
-        LoggerContext lc = (LoggerContext) LoggerFactory.getILoggerFactory();
-
         logFile = File.createTempFile(getClass().getSimpleName(), ".log");
         rotatedLogFile = new File(logFile.getPath() + ".1");
 
         FileAppender<String> fileAppender = new FileAppender<>();
         fileAppender.setEncoder(new EchoEncoder<>());
         fileAppender.setFile(logFile.getPath());
+
+        LoggerContext lc = (LoggerContext) LoggerFactory.getILoggerFactory();
         fileAppender.setContext(lc);
 
         fileAppender.start();
@@ -174,8 +174,12 @@ public class RotatableFileAppenderTest {
 
     @After
     public void deleteTempFiles() {
-        if (logFile != null) logFile.delete();
-        if (rotatedLogFile != null) rotatedLogFile.delete();
+        if (logFile != null) {
+            logFile.delete();
+        }
+        if (rotatedLogFile != null) {
+            rotatedLogFile.delete();
+        }
     }
 
 }

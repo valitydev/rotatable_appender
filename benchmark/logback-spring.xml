@@ -7,8 +7,8 @@
 
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOG_FILE}</file>
-        <rollingPolicy class="com.rbkmoney.log.appender.NoopRollingPolicy"/>
-        <triggeringPolicy class="com.rbkmoney.log.appender.RotationBasedTriggeringPolicy">
+        <rollingPolicy class="dev.vality.log.appender.NoopRollingPolicy"/>
+        <triggeringPolicy class="dev.vality.log.appender.RotationBasedTriggeringPolicy">
             <checkCachePeriod>5000</checkCachePeriod>
         </triggeringPolicy>
         <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
@@ -44,7 +44,7 @@
         <appender-ref ref="FILE"/>
     </root>
 
-    <logger name="com.rbkmoney" level="ALL"/>
+    <logger name="dev.vality" level="ALL"/>
 
     <jmxConfigurator/>
 </configuration>

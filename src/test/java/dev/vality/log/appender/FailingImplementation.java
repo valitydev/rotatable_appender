@@ -1,4 +1,4 @@
-package com.rbkmoney.log.appender;
+package dev.vality.log.appender;
 
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
